@@ -1,4 +1,5 @@
-﻿using DomainLayer.Contracts;
+﻿using AutoMapper;
+using DomainLayer.Contracts;
 using DomainLayer.Models;
 using ServicesAbstractionLayer;
 using Shared.Dtos;
@@ -10,27 +11,31 @@ using System.Threading.Tasks;
 
 namespace ServicesLayer
 {
-    public class ProductServices(IUnitOfwork _unitOfwork) : IProductServices
+    public class ProductServices(IUnitOfwork _unitOfwork,IMapper _mapper) : IProductServices
     {
         public async Task<IEnumerable<BrandDto>> GetAllBrandsAsync()
         {
-            throw new NotImplementedException();
+            var brands = await _unitOfwork.GetRepository<ProductBrand, int>().GetAllAsync();
+            return _mapper.Map<IEnumerable<BrandDto>>(brands);
 
         }
 
-        public Task<IEnumerable<ProductDto>> GetAllProductAsync()
+        public async Task<IEnumerable<ProductDto>> GetAllProductAsync()
         {
-            throw new NotImplementedException();
+            var products = await _unitOfwork.GetRepository<Product, int>().GetAllAsync();
+            return _mapper.Map<IEnumerable<ProductDto>>(products);
         }
 
-        public Task<IEnumerable<TypeDto>> GetAllTypesAsync()
+        public async Task<IEnumerable<TypeDto>> GetAllTypesAsync()
         {
-            throw new NotImplementedException();
+            var types = await _unitOfwork.GetRepository<ProductType, int>().GetAllAsync();
+            return _mapper.Map<IEnumerable<TypeDto>>(types);
         }
 
-        public Task<ProductDto> GetProductByIdAsync(int ind)
+        public async Task<ProductDto> GetProductByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var product = await _unitOfwork.GetRepository<Product, int>().GetByIdAsync(id);
+            return _mapper.Map<ProductDto>(product);
         }
     }
 }
