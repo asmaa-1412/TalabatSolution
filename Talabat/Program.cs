@@ -3,6 +3,7 @@ using DomainLayer.Contracts;
 using Microsoft.EntityFrameworkCore;
 using PersistenceLayer;
 using PersistenceLayer.Data;
+using PersistenceLayer.Repositories;
 
 namespace Talabat
 {
@@ -24,6 +25,7 @@ namespace Talabat
             });
 
             builder.Services.AddScoped<IDataSeeding, DataSeeding>();
+            builder.Services.AddScoped<IUnitOfwork, UnitOfwork>();
 
             var app = builder.Build();
 
