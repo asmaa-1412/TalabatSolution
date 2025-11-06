@@ -3,6 +3,10 @@ using DomainLayer.Contracts;
 using Microsoft.EntityFrameworkCore;
 using PersistenceLayer;
 using PersistenceLayer.Data;
+using PersistenceLayer.Repositories;
+using ServicesAbstractionLayer;
+using ServicesLayer;
+using ServicesLayer.MappingProfiles;
 
 namespace Talabat
 {
@@ -24,6 +28,9 @@ namespace Talabat
             });
 
             builder.Services.AddScoped<IDataSeeding, DataSeeding>();
+            builder.Services.AddScoped<IUnitOfwork, UnitOfwork>();
+            builder.Services.AddAutoMapper(p => p.AddProfile(new MappingProfile()));
+            builder.Services.AddScoped<IServiceManger, ServiceManger>();
 
             var app = builder.Build();
 
