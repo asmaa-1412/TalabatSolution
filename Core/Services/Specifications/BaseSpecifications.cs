@@ -12,12 +12,12 @@ namespace ServicesLayer.Specifications
     public abstract class BaseSpecifications<TEntity, TKey> : ISpecifications<TEntity, TKey>
         where TEntity : BaseEntity<TKey>
     {
-        protected BaseSpecifications(Expression<Func<TEntity, bool>> criteria)
+        protected BaseSpecifications(Expression<Func<TEntity, bool>>? criteria)
         {
             Criteria = criteria;
 
         }
-        public Expression<Func<TEntity, bool>> Criteria { get; private set; }
+        public Expression<Func<TEntity, bool>>? Criteria { get; private set; }
 
         public List<Expression<Func<TEntity, object>>> IncludeExpression { get; } = [];
         protected void AddInclude(Expression<Func<TEntity, object>> includeExpression)
