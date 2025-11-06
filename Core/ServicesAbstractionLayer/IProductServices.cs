@@ -9,7 +9,7 @@ namespace ServicesAbstractionLayer
 {
     public interface IProductServices
     {
-        Task<IEnumerable<ProductDto>> GetAllProductAsync();
+        Task<IEnumerable<ProductDto>> GetAllProductAsync(int? brandId, int? typeId);
         Task<ProductDto> GetProductByIdAsync(int id);
         Task<IEnumerable<TypeDto>> GetAllTypesAsync();
         Task<IEnumerable<BrandDto>> GetAllBrandsAsync();

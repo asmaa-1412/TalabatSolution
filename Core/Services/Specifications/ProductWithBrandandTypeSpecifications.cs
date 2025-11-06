@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace ServicesLayer.Specifications
 {
-    public class ProductWithBrandandTypeSpecifications:BaseSpecifications<Product,int>
+    public class ProductWithBrandandTypeSpecifications : BaseSpecifications<Product, int>
     {
-        public ProductWithBrandandTypeSpecifications():base(null)
+        public ProductWithBrandandTypeSpecifications(int? brandId, int? typeId)
+            : base(p => (!brandId.HasValue || p.BrandId==brandId) && (!typeId.HasValue || p.TypeId == typeId))
         {
             AddInclude(p => p.ProductBrand);
             AddInclude(p => p.ProductType);

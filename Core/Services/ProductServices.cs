@@ -21,9 +21,9 @@ namespace ServicesLayer
 
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllProductAsync()
+        public async Task<IEnumerable<ProductDto>> GetAllProductAsync(int? brandId, int? typeId)
         {
-            var spec = new ProductWithBrandandTypeSpecifications();
+            var spec = new ProductWithBrandandTypeSpecifications(brandId,typeId);
             var products = await _unitOfwork.GetRepository<Product, int>().GetAllAsync(spec);
             return _mapper.Map<IEnumerable<ProductDto>>(products);
         }

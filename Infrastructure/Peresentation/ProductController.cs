@@ -15,9 +15,9 @@ namespace PeresentationLayer
     public class ProductController(IServiceManger _serviceManger):ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts(int? brandId,int? typeId)
         {
-            var products = await _serviceManger.productServices.GetAllProductAsync();
+            var products = await _serviceManger.productServices.GetAllProductAsync(brandId, typeId);
             return Ok(products);
         }
         [HttpGet("{id}")]
