@@ -12,5 +12,9 @@ namespace DomainLayer.Contracts
     {
         public Expression<Func<TEntity, bool>>? Criteria { get; }
         public List<Expression<Func<TEntity, object>>> IncludeExpression { get; }
-    }
+
+        public Expression<Func<TEntity, object>> Orderby { get; }
+        public Expression<Func<TEntity, object>> OrderbyDesc { get; }
+
+    }  
 }

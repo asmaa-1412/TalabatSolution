@@ -3,6 +3,7 @@ using DomainLayer.Contracts;
 using DomainLayer.Models;
 using ServicesAbstractionLayer;
 using ServicesLayer.Specifications;
+using Shared;
 using Shared.Dtos;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,9 @@ namespace ServicesLayer
 
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllProductAsync(int? brandId, int? typeId)
+        public async Task<IEnumerable<ProductDto>> GetAllProductAsync(int? brandId, int? typeId, ProductSortingOptions sortingOption)
         {
-            var spec = new ProductWithBrandandTypeSpecifications(brandId,typeId);
+            var spec = new ProductWithBrandandTypeSpecifications(brandId,typeId,sortingOption);
             var products = await _unitOfwork.GetRepository<Product, int>().GetAllAsync(spec);
             return _mapper.Map<IEnumerable<ProductDto>>(products);
         }

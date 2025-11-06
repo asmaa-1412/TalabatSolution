@@ -24,5 +24,17 @@ namespace ServicesLayer.Specifications
         {
             IncludeExpression.Add(includeExpression);
         }
+        #region Orderby
+        public Expression<Func<TEntity, object>> Orderby { get; private set; }
+        public Expression<Func<TEntity, object>> OrderbyDesc { get; private set; }
+        protected void AddOrderby(Expression<Func<TEntity, object>> orderbyExpression)
+        {
+            Orderby = orderbyExpression;
+        }
+        protected void AddOrderbyDesc(Expression<Func<TEntity, object>> orderbyDescExpression)
+        {
+            OrderbyDesc = orderbyDescExpression;
+        }
+        #endregion
     }
 }

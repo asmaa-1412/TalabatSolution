@@ -19,14 +19,26 @@ namespace PersistenceLayer
             {
                 query = query.Where(spacifications.Criteria);
             }
-            if(spacifications.IncludeExpression !=null && spacifications.IncludeExpression.Count > 0)
+            
+
+            if (spacifications.Orderby != null)
             {
-                foreach(var include in spacifications.IncludeExpression)
+                query = query.OrderBy(spacifications.Orderby);
+            }
+            if (spacifications.OrderbyDesc != null)
+            {
+                query = query.OrderByDescending(spacifications.OrderbyDesc);
+            }
+
+            if(spacifications.IncludeExpression != null && spacifications.IncludeExpression.Count > 0)
+            {
+                foreach (var include in spacifications.IncludeExpression)
                 {
                     query.Include(include);
                 }
             }
             return query;
+
         }
     }
 }
