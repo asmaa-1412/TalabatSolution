@@ -37,6 +37,10 @@ namespace PersistenceLayer
                     query.Include(include);
                 }
             }
+            if (spacifications.IsPaginated)
+            {
+                query = query.Skip(spacifications.Skip).Take(spacifications.Take);
+            }
             return query;
 
         }
