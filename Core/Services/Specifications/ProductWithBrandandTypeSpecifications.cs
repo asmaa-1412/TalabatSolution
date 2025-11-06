@@ -11,7 +11,9 @@ namespace ServicesLayer.Specifications
     public class ProductWithBrandandTypeSpecifications : BaseSpecifications<Product, int>
     {
         public ProductWithBrandandTypeSpecifications(ProductQueryParams queryParams)
-            : base(p => (!queryParams.BrandId.HasValue || p.BrandId== queryParams.BrandId) && (!queryParams.TypeId.HasValue || p.TypeId == queryParams.TypeId))
+            : base(p => (!queryParams.BrandId.HasValue || p.BrandId== queryParams.BrandId)
+            && (!queryParams.TypeId.HasValue || p.TypeId == queryParams.TypeId)
+            && (string.IsNullOrEmpty(queryParams.SearchValue)||p.Name.ToLower().Contains(queryParams.SearchValue.ToLower())))
         {
             AddInclude(p => p.ProductBrand);
             AddInclude(p => p.ProductType);
