@@ -7,6 +7,7 @@ using PersistenceLayer.Repositories;
 using ServicesAbstractionLayer;
 using ServicesLayer;
 using ServicesLayer.MappingProfiles;
+using Talabat.CustomMiddleWares;
 
 namespace Talabat
 {
@@ -37,7 +38,7 @@ namespace Talabat
             using var scope = app.Services.CreateScope();
             var seedobj = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
             seedobj.DataSeed();
-
+            app.UseMiddleware<CustomExceptionHandlerMiddleWare>();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
