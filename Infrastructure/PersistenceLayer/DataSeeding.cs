@@ -1,5 +1,5 @@
 ﻿using DomainLayer.Contracts;
-using DomainLayer.Models;
+using DomainLayer.Models.ProductModels;
 using Microsoft.EntityFrameworkCore;
 using PersistenceLayer.Data;
 using System;
@@ -27,8 +27,10 @@ namespace PersistenceLayer
                 if(brand != null && brand.Any())
                 {
                     _storeDbContext.Brands.AddRange(brand);
+                    _storeDbContext.SaveChanges();
                 }
             }
+            
 
             if (!_storeDbContext.Types.Any())
             {
@@ -37,8 +39,10 @@ namespace PersistenceLayer
                 if (type != null && type.Any())
                 {
                     _storeDbContext.Types.AddRange(type);
+                    _storeDbContext.SaveChanges();
                 }
             }
+            
 
             if (!_storeDbContext.Products.Any())
             {
@@ -47,10 +51,11 @@ namespace PersistenceLayer
                 if (product != null && product.Any())
                 {
                     _storeDbContext.Products.AddRange(product);
+                    _storeDbContext.SaveChanges();
                 }
             }
 
-            _storeDbContext.SaveChanges();
+           
         }
     }
 }
