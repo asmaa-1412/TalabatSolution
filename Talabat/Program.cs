@@ -1,13 +1,18 @@
 
 using DomainLayer.Contracts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens.Experimental;
 using PersistenceLayer;
 using PersistenceLayer.Data;
 using PersistenceLayer.Repositories;
 using ServicesAbstractionLayer;
 using ServicesLayer;
 using ServicesLayer.MappingProfiles;
+using Shared.ErrorModel;
 using Talabat.CustomMiddleWares;
+using Talabat.Factories;
 
 namespace Talabat
 {
@@ -32,6 +37,11 @@ namespace Talabat
             builder.Services.AddScoped<IUnitOfwork, UnitOfwork>();
             builder.Services.AddAutoMapper(p => p.AddProfile(new MappingProfile()));
             builder.Services.AddScoped<IServiceManger, ServiceManger>();
+
+            builder.Services.Configure<ApiBehaviorOptions>((options) =>
+            {
+                options.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiVaLidationErrorResponse;
+            });
 
             var app = builder.Build();
 
