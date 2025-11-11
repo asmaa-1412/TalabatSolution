@@ -1,4 +1,5 @@
-﻿using Shared.ErrorModel;
+﻿using DomainLayer.Exceptions;
+using Shared.ErrorModel;
 using System.Text.Json;
 
 namespace Talabat.CustomMiddleWares
@@ -23,7 +24,11 @@ namespace Talabat.CustomMiddleWares
             catch(Exception ex)
             {
                 _logger.LogError(ex, "Something Went Wrong");
-                httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                httpContext.Response.StatusCode = ex switch
+                {
+                    NotFoundException => StatusCodes.Status404NotFound,
+                    _ => StatusCodes.Status500InternalServerError
+                };
                 //httpContext.Response.ContentType = "application/json";
                 var response = new ErrorToReturn()
                 {
