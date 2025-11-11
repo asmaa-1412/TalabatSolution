@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DomainLayer.Models.ProductModels;
-using Shared.Dtos;
+using Shared.Dtos.ProductDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace ServicesLayer.MappingProfiles
 {
-    public class MappingProfile:Profile
+    public class ProductMappingProfile:Profile
     {
-        public MappingProfile()
+        public ProductMappingProfile()
         {
             CreateMap<Product, ProductDto>()
                 .ForMember(dest=>dest.BrandName,option=>option.MapFrom(src=>src.ProductBrand.Name))

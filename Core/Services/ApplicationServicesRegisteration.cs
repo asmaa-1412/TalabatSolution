@@ -13,7 +13,7 @@ namespace ServicesLayer
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddAutoMapper(p => p.AddProfile(new MappingProfile()));
+            services.AddAutoMapper(p => p.AddProfile(new ProductMappingProfile()));
             services.AddScoped<IServiceManger, ServiceManger>();
             return services;
         }
