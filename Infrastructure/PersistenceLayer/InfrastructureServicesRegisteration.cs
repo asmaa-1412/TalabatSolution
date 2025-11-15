@@ -1,8 +1,11 @@
 ﻿using DomainLayer.Contracts;
+using DomainLayer.Models.IdentityModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PersistenceLayer.Data;
+using PersistenceLayer.Identity;
 using PersistenceLayer.Repositories;
 using StackExchange.Redis;
 using System;
@@ -21,7 +24,10 @@ namespace PersistenceLayer
             {
                 option.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
             });
-
+            services.AddDbContext<StoreIdentityDbContext>(option =>
+            {
+                option.UseSqlServer(_configuration.GetConnectionString("IdentityConnection"));
+            });
             services.AddScoped<IDataSeeding, DataSeeding>();
             services.AddScoped<IUnitOfwork, UnitOfwork>();
             services.AddScoped<IBasketRepository, BasketRepository>();
@@ -29,6 +35,9 @@ namespace PersistenceLayer
             {
                return ConnectionMultiplexer.Connect(_configuration.GetConnectionString("ReddisConnectionStrings"));
             });
+
+            services.AddIdentityCore<ApplicationUser>().AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<StoreIdentityDbContext>();
             return services;
         }
     }
