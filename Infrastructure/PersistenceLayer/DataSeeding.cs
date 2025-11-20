@@ -1,5 +1,6 @@
 ﻿using DomainLayer.Contracts;
 using DomainLayer.Models.IdentityModel;
+using DomainLayer.Models.OrderModels;
 using DomainLayer.Models.ProductModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -58,8 +59,17 @@ namespace PersistenceLayer
                     _storeDbContext.SaveChanges();
                 }
             }
+            if (!_storeDbContext.Set<DeliveryMethod>().Any())
+            {
+                var deliveryMethod = File.ReadAllText(@"..\Infrastructure\PersistenceLayer\Data\DataSeed\delivery.json");
+                var deliveryMethodOnjs = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryMethod);
+                if (deliveryMethodOnjs != null && deliveryMethodOnjs.Any())
+                {
+                    await _storeDbContext.AddRangeAsync(deliveryMethodOnjs);
+                    _storeDbContext.SaveChanges();
+                }
+            }
 
-           
         }
 
         public async Task IdentityDataSeedAsync()
