@@ -25,13 +25,13 @@ namespace ServicesLayer
                 {
                     Email = user.Email,
                     DisplayName = user.DisplayName,
-                    Token= "To Do"
+                    Token= CreateTokenAsync(user)
                 };
             }
             else throw new UnauthorizedException();
         }
 
-        public async Task<UserDto> RegisterDto(RegisterDto registerDto)
+        public async Task<UserDto> RegisterAsync(RegisterDto registerDto)
         {
             var user = new ApplicationUser()
             {
@@ -45,13 +45,18 @@ namespace ServicesLayer
             {
                 DisplayName = user.DisplayName,
                 Email = user.Email,
-                Token = "Token To Do"
+                Token = CreateTokenAsync(user)
             };
             else
             {
                 var errors=res.Errors.Select(e => e.Description).ToList();
                 throw new BadReguestException(errors);
             }
+        }
+
+        private string CreateTokenAsync(ApplicationUser user)
+        {
+            return "Token";
         }
     }
 }

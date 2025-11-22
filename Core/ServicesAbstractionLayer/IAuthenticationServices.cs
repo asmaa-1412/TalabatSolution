@@ -10,6 +10,6 @@ namespace ServicesAbstractionLayer
     public interface IAuthenticationServices
     {
         Task<UserDto> LoginAsync(LoginDto loginDto);
-        Task<UserDto> RegisterDto(RegisterDto registerDto);
+        Task<UserDto> RegisterAsync(RegisterDto registerDto);
     }
 }
