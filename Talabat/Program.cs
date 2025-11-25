@@ -33,7 +33,7 @@ namespace Talabat
             builder.Services.AddApplicationServices();
             //ApplicationServicesRegisteration.AddApplicationServices(builder.Services);
 
-            builder.Services.AddWebApplicationServices();
+            builder.Services.AddWebApplicationServices(builder.Configuration);
 
             #endregion
 
@@ -54,6 +54,7 @@ namespace Talabat
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseStaticFiles();
             app.MapControllers();
