@@ -9,5 +9,6 @@ namespace ServicesAbstractionLayer
     public interface IServiceManger
     {
         public IProductServices productServices { get; }
+        public IOrderServices orderServices { get; }
     }
 }

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace ServicesLayer
 {
-    public class OrderServices(IMapper _mapper,IUnitOfwork _unitOfwork,IBasketRepository _basketRepository) : IOrderServices
+    public class OrderServices(IUnitOfwork _unitOfwork, IMapper _mapper, IBasketRepository _basketRepository) : IOrderServices
     {
         public async Task<OrderToReturnDto> CreateOrderAsync(OrderDto orderDto, string email)
         {
