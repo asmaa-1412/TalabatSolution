@@ -6,6 +6,7 @@ using DomainLayer.Models.OrderModels;
 using DomainLayer.Models.ProductModels;
 using Microsoft.VisualBasic;
 using ServicesAbstractionLayer;
+using ServicesLayer.Specifications;
 using Shared.Dtos.OrderDtos;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,26 @@ namespace ServicesLayer
             await _unitOfwork.SaveChangesAsync();
             return _mapper.Map<OrderToReturnDto>(order);
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<OrderToReturnDto>> GetAllOrdersAsync(string email)
+        {
+            var specs = new OrderSpecifications(email);
+            var orders = await _unitOfwork.GetRepository<Order, Guid>().GetAllAsync(specs);
+            return _mapper.Map<IEnumerable<OrderToReturnDto>>(orders);
+        }
+
+        public async Task<IEnumerable<DeliveryMethodDto>> GetDeliveryMethodAsync()
+        {
+            var deliveryMethods = await _unitOfwork.GetRepository<DeliveryMethod, int>().GetAllAsync();
+            return _mapper.Map<IEnumerable<DeliveryMethodDto>>(deliveryMethods);
+        }
+
+        public async Task<OrderToReturnDto> GetOrderByIdAsync(Guid id)
+        {
+            var specs = new OrderSpecifications(id);
+            var order = await _unitOfwork.GetRepository<Order, Guid>().GetByIdAsync(specs);
+            return _mapper.Map<OrderToReturnDto>(order);
         }
     }
 }

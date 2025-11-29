@@ -26,6 +26,7 @@ namespace ServicesLayer.MappingProfiles
                .ForMember(dest => dest.PictureUrl, opt => opt
                .MapFrom<OrderItemPictureUrlResolver>());
 
+            CreateMap<DeliveryMethod, DeliveryMethodDto>().ReverseMap();
         }
     }
 }

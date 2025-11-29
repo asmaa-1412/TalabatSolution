@@ -9,6 +9,11 @@ namespace ServicesAbstractionLayer
 {
     public interface IOrderServices
     {
-        public Task<OrderToReturnDto> CreateOrderAsync(OrderDto orderDto, string email);
+        Task<OrderToReturnDto> CreateOrderAsync(OrderDto orderDto, string email);
+        Task<IEnumerable<DeliveryMethodDto>> GetDeliveryMethodAsync();
+        Task<IEnumerable<OrderToReturnDto>> GetAllOrdersAsync(string email);
+        Task<OrderToReturnDto> GetOrderByIdAsync(Guid id);
+
+
     }
 }
