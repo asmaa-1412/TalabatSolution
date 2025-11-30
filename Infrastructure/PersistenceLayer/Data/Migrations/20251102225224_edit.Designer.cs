@@ -11,8 +11,8 @@ using PersistenceLayer.Data;
 namespace PersistenceLayer.Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20251031143613_initailCreate")]
-    partial class initailCreate
+    [Migration("20251102225224_edit")]
+    partial class edit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
