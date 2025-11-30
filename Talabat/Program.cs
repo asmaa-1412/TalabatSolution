@@ -11,6 +11,7 @@ using ServicesAbstractionLayer;
 using ServicesLayer;
 using ServicesLayer.MappingProfiles;
 using Shared.ErrorModel;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using Talabat.CustomMiddleWares;
 using Talabat.Extentions;
 using Talabat.Factories;
@@ -28,6 +29,7 @@ namespace Talabat
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+            builder.Services.AddSwaggerGen();
 
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddApplicationServices();
@@ -48,7 +50,17 @@ namespace Talabat
     
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
+                {
+                    options.ConfigObject = new ConfigObject()
+                    {
+                        DisplayRequestDuration= true
+                    };
+                    options.DocumentTitle = "Talabat Ecommerce App";
+                    options.DocExpansion(DocExpansion.None);
+                    options.EnableFilter();
+                });
             }
 
             app.UseHttpsRedirection();
