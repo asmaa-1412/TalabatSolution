@@ -1,8 +1,20 @@
 
 using DomainLayer.Contracts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens.Experimental;
 using PersistenceLayer;
 using PersistenceLayer.Data;
+using PersistenceLayer.Repositories;
+using ServicesAbstractionLayer;
+using ServicesLayer;
+using ServicesLayer.MappingProfiles;
+using Shared.ErrorModel;
+using Swashbuckle.AspNetCore.SwaggerUI;
+using Talabat.CustomMiddleWares;
+using Talabat.Extentions;
+using Talabat.Factories;
 
 namespace Talabat
 {
@@ -12,39 +24,66 @@ namespace Talabat
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            #region Add services to the container.
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
-
-            builder.Services.AddDbContext<StoreDbContext>(option =>
+            builder.Services.AddSwaggerService();
+            builder.Services.AddCors(options =>
             {
-                option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyOrigin();
+                });
             });
 
-            builder.Services.AddScoped<IDataSeeding, DataSeeding>();
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services.AddApplicationServices();
+            //ApplicationServicesRegisteration.AddApplicationServices(builder.Services);
+
+            builder.Services.AddWebApplicationServices(builder.Configuration);
+
+            #endregion
 
             var app = builder.Build();
 
-            using var scope = app.Services.CreateScope();
-            var seedobj = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
-            seedobj.DataSeed();
+            #region DataSeed
+            app.SeedDatabase();
+            #endregion
 
-            // Configure the HTTP request pipeline.
+            #region Configure the HTTP request pipeline.
+            app.UseMiddleware<CustomExceptionHandlerMiddleWare>();
+    
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
+                {
+                    options.ConfigObject = new ConfigObject()
+                    {
+                        DisplayRequestDuration= true
+                    };
+                    options.DocumentTitle = "Talabat Ecommerce App";
+                    options.DocExpansion(DocExpansion.None);
+                    options.EnableFilter();
+                    options.EnablePersistAuthorization();
+                });
             }
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
-
+            app.UseStaticFiles();
+            app.UseCors("AllowAll");
             app.MapControllers();
 
             app.Run();
+            #endregion
         }
     }
 }
