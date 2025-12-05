@@ -6,11 +6,11 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PeresentationLayer
+namespace PeresentationLayer.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
-    public abstract class ApiBaseController :ControllerBase
+    public abstract class ApiBaseController : ControllerBase
     {
         protected string GetEmailFromToken() => User.FindFirstValue(ClaimTypes.Email)!;
     }

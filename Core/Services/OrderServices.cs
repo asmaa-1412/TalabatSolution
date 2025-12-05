@@ -20,7 +20,7 @@ namespace ServicesLayer
     {
         public async Task<OrderToReturnDto> CreateOrderAsync(OrderDto orderDto, string email)
         {
-            var orderAddress = _mapper.Map<OrderAddress>(orderDto.Address);
+            var orderAddress = _mapper.Map<OrderAddress>(orderDto.ShipToAddress);
             var basket = await _basketRepository.GetBasketAsync(orderDto.BasketId)
                 ?? throw new BasketNotFoundException(orderDto.BasketId);
 

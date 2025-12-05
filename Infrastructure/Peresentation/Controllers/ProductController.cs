@@ -9,14 +9,14 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PeresentationLayer
+namespace PeresentationLayer.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
-    public class ProductController(IServiceManger _serviceManger):ControllerBase
+    public class ProductController(IServiceManger _serviceManger) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts([FromQuery]ProductQueryParams queryParams)
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts([FromQuery] ProductQueryParams queryParams)
         {
             var products = await _serviceManger.productServices.GetAllProductAsync(queryParams);
             return Ok(products);

@@ -29,13 +29,22 @@ namespace Talabat
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerService();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyOrigin();
+                });
+            });
 
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddApplicationServices();
             //ApplicationServicesRegisteration.AddApplicationServices(builder.Services);
 
-            builder.Services.AddWebApplicationServices();
+            builder.Services.AddWebApplicationServices(builder.Configuration);
 
             #endregion
 
@@ -60,14 +69,17 @@ namespace Talabat
                     options.DocumentTitle = "Talabat Ecommerce App";
                     options.DocExpansion(DocExpansion.None);
                     options.EnableFilter();
+                    options.EnablePersistAuthorization();
                 });
             }
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseStaticFiles();
+            app.UseCors("AllowAll");
             app.MapControllers();
 
             app.Run();

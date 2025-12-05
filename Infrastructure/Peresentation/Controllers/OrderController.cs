@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PeresentationLayer
+namespace PeresentationLayer.Controllers
 {
     [Authorize]
     public class OrderController(IServiceManger _serviceManger) : ApiBaseController
