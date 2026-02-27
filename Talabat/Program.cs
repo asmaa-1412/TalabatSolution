@@ -1,8 +1,19 @@
 
 using DomainLayer.Contracts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens.Experimental;
 using PersistenceLayer;
 using PersistenceLayer.Data;
+using PersistenceLayer.Repositories;
+using ServicesAbstractionLayer;
+using ServicesLayer;
+using ServicesLayer.MappingProfiles;
+using Shared.ErrorModel;
+using Talabat.CustomMiddleWares;
+using Talabat.Extentions;
+using Talabat.Factories;
 
 namespace Talabat
 {
@@ -12,26 +23,29 @@ namespace Talabat
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            #region Add services to the container.
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
-            builder.Services.AddDbContext<StoreDbContext>(option =>
-            {
-                option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services.AddApplicationServices();
+            //ApplicationServicesRegisteration.AddApplicationServices(builder.Services);
 
-            builder.Services.AddScoped<IDataSeeding, DataSeeding>();
+            builder.Services.AddWebApplicationServices();
+
+            #endregion
 
             var app = builder.Build();
 
-            using var scope = app.Services.CreateScope();
-            var seedobj = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
-            seedobj.DataSeed();
+            #region DataSeed
+            app.SeedDatabase();
+            #endregion
 
-            // Configure the HTTP request pipeline.
+            #region Configure the HTTP request pipeline.
+            app.UseMiddleware<CustomExceptionHandlerMiddleWare>();
+    
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
@@ -41,10 +55,11 @@ namespace Talabat
 
             app.UseAuthorization();
 
-
+            app.UseStaticFiles();
             app.MapControllers();
 
             app.Run();
+            #endregion
         }
     }
 }

@@ -8,6 +8,7 @@ namespace DomainLayer.Contracts
 {
     public interface IDataSeeding
     {
-        void DataSeed();
+        public Task DataSeedAsync();
+        public Task IdentityDataSeedAsync();
     }
 }
